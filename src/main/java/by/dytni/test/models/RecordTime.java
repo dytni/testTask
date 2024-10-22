@@ -1,5 +1,5 @@
 package by.dytni.test.models;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
