@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RecordTime {
+public class Record {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,4 +32,7 @@ public class RecordTime {
 
     @Column(name = "description") // Указание столбца в таблице
     private String description;
+
+    @Column(name = "name") // Указание столбца в таблице
+    private String name;
 }

@@ -1,17 +1,18 @@
 package by.dytni.test.repository;
 
-import by.dytni.test.models.RecordTime;
+import by.dytni.test.models.Record;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface RecordRepository extends JpaRepository<RecordTime, Long> {
+public interface RecordRepository extends JpaRepository<Record, Long> {
 
-    // Поиск записей по user_id
-    List<RecordTime> findByUserId(Long userId);
+    // Поиск записей по username
+    List<Record> findByUserUsername(String username);
 
-    // Поиск записей по project_id
-    List<RecordTime> findByProjectId(Long projectId);
+    void deleteAllByProjectId(Long projectId);
 
 
+    List<Record> findByProjectName(String projectName);
 }
+

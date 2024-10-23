@@ -1,11 +1,17 @@
 package by.dytni.test.service;
 
-import by.dytni.test.models.RecordTime;
+import by.dytni.test.models.Project;
+import by.dytni.test.models.Record;
+import by.dytni.test.models.User;
+import by.dytni.test.repository.ProjectRepository;
 import by.dytni.test.repository.RecordRepository;
+import by.dytni.test.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,22 +19,65 @@ import java.util.Optional;
 @Service
 public class RecordService {
     private RecordRepository recordRepository;
+    private ProjectRepository projectRepository;
+    private UserRepository userRepository;
 
-    public void save(RecordTime record) {
+    public Long startRecord(String projectName, String name, String description) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+        User user = userRepository.findByUsername(currentUsername).orElse(null);
+        Project project = projectRepository.findByName(projectName).orElse(null);
+        if (project == null) {
+            return -1L;
+        }
+        if (user == null) {
+            return -1L;
+        }
+        Record newRecord = new Record();
+        newRecord.setUser(user);
+        newRecord.setProject(project);
+        newRecord.setStartTime(LocalDateTime.now());
+        newRecord.setEndTime(null);
+        newRecord.setDescription(description);
+        newRecord.setName(name);
+        return recordRepository.save(newRecord).getId();
+    }
+    public void endRecord(Long id) {
+        Record record = recordRepository.findById(id).orElse(null);
+        if (record == null) {
+            return;
+        }
+        record.setEndTime(LocalDateTime.now());
         recordRepository.save(record);
     }
-    public RecordTime findById(Long id) {
-        Optional<RecordTime> record = recordRepository.findById(id);
+    public Record findById(Long id) {
+        Optional<Record> record = recordRepository.findById(id);
         return record.orElse(null);
     }
-    public List<RecordTime> getRecordsByUserId(Long userId) {
-        return recordRepository.findByUserId(userId);
+    public List<Record> getRecordsByUserUsername(String userUsername) {
+        return recordRepository.findByUserUsername(userUsername);
+    }
+    public List<Record> getRecordsByProjectName(String projectName) {
+        return recordRepository.findByProjectName(projectName);
     }
 
-    public List<RecordTime> getRecordsByProjectId(Long projectId) {
-        return recordRepository.findByProjectId(projectId);
-    }
     public void deleteById(Long id) {
-        recordRepository.deleteById(id);
+        if(recordRepository.existsById(id)) {
+            recordRepository.deleteById(id);
+        }
+    }
+    public void update(Long id, String name, String description) {
+        Record record = recordRepository.findById(id).orElse(null);
+        if (record == null) {
+            return;
+        }
+        if (!(name == null || name.isEmpty())){
+            record.setName(name);
+        }
+        if (!(description == null || description.isEmpty())){
+            record.setDescription(description);
+        }
+        recordRepository.save(record);
+
     }
 }
