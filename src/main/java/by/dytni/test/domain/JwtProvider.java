@@ -22,6 +22,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
+///
+///Класс для конфигурации JWT токена
+///
+
 @Slf4j
 @Component
 public class JwtProvider {
@@ -36,7 +40,7 @@ public class JwtProvider {
         this.jwtAccessSecret = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtAccessSecret));
         this.jwtRefreshSecret = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtRefreshSecret));
     }
-
+    //генерация jwt токена
     public String generateAccessToken(@NonNull User user) {
         final LocalDateTime now = LocalDateTime.now();
         final Instant accessExpirationInstant = now.plusMinutes(5).atZone(ZoneId.systemDefault()).toInstant();
@@ -48,7 +52,7 @@ public class JwtProvider {
                 .claim("roles", user.getRoles())
                 .compact();
     }
-
+    //обновление токена
     public String generateRefreshToken(@NonNull User user) {
         final LocalDateTime now = LocalDateTime.now();
         final Instant refreshExpirationInstant = now.plusDays(10).atZone(ZoneId.systemDefault()).toInstant();

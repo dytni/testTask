@@ -1,4 +1,4 @@
--- Добавляем администратора
+-- Добавляем администратора с логином admin и паролем
 INSERT INTO users (username, password)
 VALUES ('admin', '$2a$10$oCJGzkBuul/GVxpEVfmKCuWoNZ8fBvE3wQQiOcdfnGkskyUxV.IO6') RETURNING id;
 
@@ -7,7 +7,7 @@ VALUES ('admin', '$2a$10$oCJGzkBuul/GVxpEVfmKCuWoNZ8fBvE3wQQiOcdfnGkskyUxV.IO6')
 INSERT INTO user_roles (user_id, role)
 VALUES (currval(pg_get_serial_sequence('users', 'id')), 'ADMIN');
 
--- Добавляем обычного пользователя
+-- Добавляем обычного пользователя с логином user и паролем
 INSERT INTO users (username, password)
 VALUES ('user', '$2a$10$GqQxERcnJbFoW7ZGvch.feQfpfM9tW4kMJCQff6lLgrZyrvFyTe5G') RETURNING id;
 

@@ -11,22 +11,24 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.PostUpdate;
 import java.util.List;
 
+///
+/// Контроллер для работы с проектами
+///
+
 @RestController
 @RequestMapping("/projects")
 @RequiredArgsConstructor
 public class ProjectController {
         private final ProjectService projectService;
 
+        //добавление проекта
         @PreAuthorize("hasAuthority('ADMIN')")
         @PostMapping("/add")
         public void addProject(@RequestParam("name") String name,
                                @RequestParam("description") String description) {
-            Project project = new Project();
-            project.setName(name);
-            project.setDescription(description);
-            projectService.save(project);
+            projectService.save(name, description);
         }
-
+        //получение проекта по имени если имя не передано получение всех проектов (Доступ имеет как админ, так и обычный пользователь)
         @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
         @GetMapping("/get")
         public List<Project> getProjects(@RequestParam(name = "name", required = false)String name){
@@ -37,12 +39,13 @@ public class ProjectController {
             }
         }
 
-
+        //удаление проекта
         @PreAuthorize("hasAuthority('ADMIN')")
         @DeleteMapping("/delete")
         public void deleteProject(@RequestParam(name = "id") Long id){
             projectService.delete(id);
         }
+        //обновление проекта
         @PreAuthorize("hasAuthority('ADMIN')")
         @PatchMapping("/update")
         public void updateProject(@RequestParam(name = "id") Long id,

@@ -15,6 +15,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+
+///
+///Конфигурация Spring Security с запрет на вход не аутентифицированным пользователя на все эндпоинты кроме /login/** и /token
+/// и добавления нашего фильтра в цепочку вызовов FilterChain 
+///
+
 public class SecurityConfig {
 
 

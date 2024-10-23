@@ -11,13 +11,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+///
+/// Сервис для работы с данными таблицы хранящей User
+///
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository usersRepository;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
+    //метод добавления нового пользователя со стандартной ролью
     public void saveUser(String username,String password) {
         User user = new User();
         user.setUsername(username);
@@ -26,18 +30,21 @@ public class UserService {
         user.setRoles(Set.of(Role.USER));
         usersRepository.save(user);
     }
-
+    //метод для получения пользователя по его username
     public Optional<User> getByUsername(String username) {
         return usersRepository.findByUsername(username);
     }
+    //метод получения всех пользователей
     public List<User> getUsers() {
         return usersRepository.findAll();
     }
+    //метод для удаления пользователей
     public void deleteUser(Long id) {
         if(usersRepository.existsById(id)) {
             usersRepository.deleteById(id);
         }
     }
+    //метод для обновления пользователя
     public void updateUser(Long id, String username, String password, String role) {
         User user = usersRepository.findById(id).orElse(null);
         if (user == null) {
@@ -52,6 +59,7 @@ public class UserService {
         if(!(role == null || role.isEmpty())) {
             user.setRoles(Set.of(Role.valueOf(role)));
         }
+        usersRepository.save(user);
     }
 
 }

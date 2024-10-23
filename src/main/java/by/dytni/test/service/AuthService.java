@@ -1,6 +1,5 @@
 package by.dytni.test.service;
 
-import by.dytni.test.domain.JwtAuthentication;
 import by.dytni.test.domain.JwtProvider;
 import by.dytni.test.domain.JwtRequest;
 import by.dytni.test.domain.JwtResponse;
@@ -8,7 +7,6 @@ import by.dytni.test.models.User;
 import io.jsonwebtoken.Claims;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +23,7 @@ public class AuthService {
     private final Map<String, String> refreshStorage = new HashMap<>();
     private final JwtProvider jwtProvider;
 
+    //логин пользователя и проверка за хэшированного пароля и обновление токена
     public JwtResponse login(@NonNull JwtRequest authRequest) throws AuthException {
         final User user = userService.getByUsername(authRequest.getUsername())
                 .orElseThrow(() -> new AuthException("Пользователь не найден"));
@@ -39,7 +38,7 @@ public class AuthService {
         refreshStorage.put(user.getUsername(), refreshToken);
         return new JwtResponse(accessToken, refreshToken);
     }
-
+    //метод для получения токена
     public JwtResponse getAccessToken(@NonNull String refreshToken) throws AuthException {
         if (jwtProvider.validateRefreshToken(refreshToken)) {
             final Claims claims = jwtProvider.getRefreshClaims(refreshToken);
@@ -54,7 +53,7 @@ public class AuthService {
         }
         return new JwtResponse(null, null);
     }
-
+    //метод для обновления токена устанавливает 10 дней валидности
     public JwtResponse refresh(@NonNull String refreshToken) throws AuthException {
         if (jwtProvider.validateRefreshToken(refreshToken)) {
             final Claims claims = jwtProvider.getRefreshClaims(refreshToken);
@@ -70,10 +69,6 @@ public class AuthService {
             }
         }
         throw new AuthException("Невалидный JWT токен");
-    }
-
-    public JwtAuthentication getAuthInfo() {
-        return (JwtAuthentication) SecurityContextHolder.getContext().getAuthentication();
     }
 
 }

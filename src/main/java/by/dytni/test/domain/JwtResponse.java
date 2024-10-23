@@ -2,7 +2,9 @@ package by.dytni.test.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
+///
+///Класс для конфигурации ответа
+///
 @Getter
 @AllArgsConstructor
 public class JwtResponse {

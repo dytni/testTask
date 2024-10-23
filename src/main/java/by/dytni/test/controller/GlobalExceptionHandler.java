@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+///
+/// Глобальный обработчик ошибок
+///
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 

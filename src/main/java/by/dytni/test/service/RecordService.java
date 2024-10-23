@@ -13,7 +13,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+
+
+///
+/// Сервис для работы с данными таблицы хранящей Record
+///
 
 @AllArgsConstructor
 @Service
@@ -21,7 +25,7 @@ public class RecordService {
     private RecordRepository recordRepository;
     private ProjectRepository projectRepository;
     private UserRepository userRepository;
-
+    //метод добавления новой записи со временем начала равным нынешнему времени и незаполненным временем окончания
     public Long startRecord(String projectName, String name, String description) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
@@ -42,6 +46,7 @@ public class RecordService {
         newRecord.setName(name);
         return recordRepository.save(newRecord).getId();
     }
+    //метод для обновления записи в которой еще нет времени окончания
     public void endRecord(Long id) {
         Record record = recordRepository.findById(id).orElse(null);
         if (record == null) {
@@ -50,22 +55,21 @@ public class RecordService {
         record.setEndTime(LocalDateTime.now());
         recordRepository.save(record);
     }
-    public Record findById(Long id) {
-        Optional<Record> record = recordRepository.findById(id);
-        return record.orElse(null);
-    }
+    //метод поиска записей по username пользователя
     public List<Record> getRecordsByUserUsername(String userUsername) {
         return recordRepository.findByUserUsername(userUsername);
     }
+    //метод поиска записей по projectName проекта
     public List<Record> getRecordsByProjectName(String projectName) {
         return recordRepository.findByProjectName(projectName);
     }
-
+    //метод для удаления проекта
     public void deleteById(Long id) {
         if(recordRepository.existsById(id)) {
             recordRepository.deleteById(id);
         }
     }
+    //метод для удаления записи
     public void update(Long id, String name, String description) {
         Record record = recordRepository.findById(id).orElse(null);
         if (record == null) {

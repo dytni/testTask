@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+///
+/// Контролер для работы с пользователями доступ имеет только админ
+///
+
 @RestController
 @RequestMapping("/users")
 @AllArgsConstructor
@@ -16,19 +20,20 @@ public class UserController {
 
     private final UserService userService;
 
+    //Получение всех пользователей
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/all")
     public List<User> getAllUsers() {
         return userService.getUsers();
     }
-
+    //Получение по username
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/getByUsername")
     public User getUserByUsername(@RequestParam(name = "username") String username) {
        return userService.getByUsername(username).orElseThrow(() -> new
                NoSuchElementException("No user found with username " + username));
     }
-
+    //Обновление полей пользователя
     @PreAuthorize("hasAuthority('ADMIN')")
     @PatchMapping("/update")
     public void updateUser( @RequestParam(name = "userId") Long userId,
@@ -38,13 +43,13 @@ public class UserController {
     ){
         userService.updateUser(userId, username, password, role);
     }
-
+    //Удаление пользователя по id
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/delete")
     public void deleteUser(@RequestParam(name = "userId") Long userId) {
         userService.deleteUser(userId);
     }
-
+    //Добавление пользователя (добавляется всегда пользователь с ролью 'USER')
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/add")
     public void addUser(@RequestParam(name = "username") String username,
