@@ -13,6 +13,6 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleException(Model model, Exception ex) {
         model.addAttribute("errorMessage", ex.getMessage());
-        return "error";
+        return ex.getMessage();
     }
 }

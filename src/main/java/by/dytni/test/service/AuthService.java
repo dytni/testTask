@@ -9,6 +9,7 @@ import io.jsonwebtoken.Claims;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.security.auth.message.AuthException;
@@ -28,7 +29,8 @@ public class AuthService {
         final User user = userService.getByUsername(authRequest.getUsername())
                 .orElseThrow(() -> new AuthException("Пользователь не найден"));
 
-        if (!user.getPassword().equals(authRequest.getPassword())) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (!encoder.matches(authRequest.getPassword(),user.getPassword())) {
             throw new AuthException("Неправильный пароль");
         }
 
