@@ -2,13 +2,10 @@ package by.dytni.test.controller;
 
 import by.dytni.test.models.Project;
 import by.dytni.test.service.ProjectService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.PostUpdate;
 import java.util.List;
 
 ///

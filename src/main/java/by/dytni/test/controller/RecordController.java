@@ -72,7 +72,7 @@ public class RecordController {
     }
     //Получить все записи принадлежащие выбранному пользователю
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/getByUser")
+    @GetMapping("/getByUserAdmin")
     public List<Record> getByUser(@RequestParam(name = "username") String username){
        return recordService.getRecordsByUserUsername(username);
     }
