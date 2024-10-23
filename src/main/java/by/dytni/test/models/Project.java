@@ -24,5 +24,5 @@ public class Project {
     private String description;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<RecordTime> records;
+    private List<Record> records;
 }
