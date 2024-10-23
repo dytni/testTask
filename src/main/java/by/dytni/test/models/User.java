@@ -29,6 +29,6 @@ public class User {
     @Column(name = "role")
     private Set<Role> roles;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<RecordTime> records;
+    private List<Record> records;
 
 }
