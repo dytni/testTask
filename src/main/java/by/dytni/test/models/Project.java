@@ -17,6 +17,12 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "description")
+    private String description;
+
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<RecordTime> records;
 }
