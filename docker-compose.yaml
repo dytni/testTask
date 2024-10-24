@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  api:
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    expose:
+      - "8080"
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: "testDB"
+      POSTGRES_USER: "dytni"
+      POSTGRES_PASSWORD: "1331"
+    ports:
+      - "5436:5436"
