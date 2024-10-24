@@ -2,6 +2,7 @@ package by.dytni.test.service;
 
 import by.dytni.test.models.Role;
 import by.dytni.test.models.User;
+import by.dytni.test.repository.RecordRepository;
 import by.dytni.test.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,6 +20,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final RecordRepository recordRepository;
     private final UserRepository usersRepository;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     //метод добавления нового пользователя со стандартной ролью
@@ -41,6 +43,7 @@ public class UserService {
     //метод для удаления пользователей
     public void deleteUser(Long id) {
         if(usersRepository.existsById(id)) {
+            recordRepository.deleteAllByUserId(id);
             usersRepository.deleteById(id);
         }
     }
