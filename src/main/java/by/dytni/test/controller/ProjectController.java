@@ -26,7 +26,6 @@ public class ProjectController {
             projectService.save(name, description);
         }
         //получение проекта по имени если имя не передано получение всех проектов (Доступ имеет как админ, так и обычный пользователь)
-        @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
         @GetMapping("/get")
         public List<Project> getProjects(@RequestParam(name = "name", required = false)String name){
             if (name == null || name.isEmpty()) {

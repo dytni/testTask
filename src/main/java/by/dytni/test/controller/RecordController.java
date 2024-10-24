@@ -39,7 +39,6 @@ public class RecordController {
        session.removeAttribute("recordId");
     }
     //удаление записи (Доступ имеет как админ, так и обычный пользователь)
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @DeleteMapping("/delete")
     public void deleteRecord(@RequestParam(name = "id") Long id){
         recordService.deleteById(id);
@@ -54,7 +53,6 @@ public class RecordController {
         recordService.update(id, name, description);
     }
     //получение всех записей принадлежащих к одному проекту (Доступ имеет как админ, так и обычный пользователь)
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/getByProject")
     public List<Record> getByProject(@RequestParam(name = "projectName") String projectName){
        return recordService.getRecordsByProjectName(projectName);
