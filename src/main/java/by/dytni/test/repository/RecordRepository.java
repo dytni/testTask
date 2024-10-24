@@ -12,7 +12,9 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
 
     void deleteAllByProjectId(Long projectId);
 
-
     List<Record> findByProjectName(String projectName);
+
+    void deleteAllByUserId(Long id);
+
 }
 
