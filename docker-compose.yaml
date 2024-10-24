@@ -1,13 +1,18 @@
 version: "3.9"
 services:
   api:
+    image: test-api:latest
     build:
-      dockerfile: ./Dockerfile
       context: .
-    expose:
-      - "8080"
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
     depends_on:
       - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/testDB
+      SPRING_DATASOURCE_USERNAME: dytni
+      SPRING_DATASOURCE_PASSWORD: 1331
   postgres:
     image: postgres:latest
     environment:
@@ -15,4 +20,7 @@ services:
       POSTGRES_USER: "dytni"
       POSTGRES_PASSWORD: "1331"
     ports:
-      - "5436:5436"
+      - "5432:5432"
+
+
+
